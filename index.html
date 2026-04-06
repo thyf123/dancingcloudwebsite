@@ -278,18 +278,33 @@
         const errorMsg = document.getElementById('errorMsg');
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        applyBtn.addEventListener('click', () => {
+        applyBtn.addEventListener('click', async () => {
             const val = emailInput.value.trim();
             if (!val || !emailRegex.test(val)) {
                 errorMsg.classList.add('visible');
                 emailInput.style.borderBottomColor = '#b5594e';
-            } else {
-                errorMsg.classList.remove('visible');
-                emailInput.style.display = 'none';
-                errorMsg.style.display = 'none';
-                applyBtn.textContent = 'Thank you. We will be in touch.';
-                applyBtn.style.pointerEvents = 'none';
+                return;
             }
+
+            applyBtn.textContent = '...';
+            applyBtn.style.pointerEvents = 'none';
+
+            try {
+                const res = await fetch('https://api-production-7c93.up.railway.app/waitlist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: val }),
+                });
+                if (!res.ok) throw new Error();
+            } catch (_) {
+                // Still show success — we don't want to leak backend state
+            }
+
+            errorMsg.classList.remove('visible');
+            emailInput.style.display = 'none';
+            errorMsg.style.display = 'none';
+            applyBtn.textContent = 'Thank you. We will be in touch.';
+            applyBtn.classList.add('submitted');
         });
 
         emailInput.addEventListener('input', () => {
