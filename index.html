@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dancing Cloud</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Inter:wght@300;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #FAF9F6;
+            --text: #2F3430;
+            --gold: #D4AF37;
+            --charcoal: #3A3A3A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .page {
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            background-image: url('https://images.unsplash.com/photo-1505118380757-91f5f5632de0?q=80&w=2526&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .page::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(250, 249, 246, 0.55) 0%,
+                rgba(250, 249, 246, 0.45) 40%,
+                rgba(250, 249, 246, 0.6) 100%
+            );
+        }
+
+        /* ── Header ── */
+        .header {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding-top: clamp(2.5rem, 5vh, 4rem);
+        }
+
+        .header-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.4rem, 5vw, 3.5rem);
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text);
+            margin-bottom: 0.6rem;
+        }
+
+        .header-tagline {
+            font-family: 'Inter', sans-serif;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        /* ── Hero ── */
+        .hero {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .hero-headline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.4rem, 6vw, 4rem);
+            font-weight: 300;
+            font-style: italic;
+            letter-spacing: 0.02em;
+            line-height: 1.15;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-sub {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(12px, 1.4vw, 14px);
+            font-weight: 300;
+            line-height: 1.9;
+            color: var(--charcoal);
+            opacity: 0.65;
+            max-width: 480px;
+            margin-bottom: 2.8rem;
+            letter-spacing: 0.01em;
+        }
+
+        /* ── CTA ── */
+        .cta-section {
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .cta-instruction {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--charcoal);
+            opacity: 0.5;
+            margin-bottom: 1.6rem;
+            line-height: 1.7;
+        }
+
+        .email-input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid rgba(58, 58, 58, 0.25);
+            background: transparent;
+            outline: none;
+            padding: 14px 0;
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 15px;
+            font-style: italic;
+            color: var(--text);
+            letter-spacing: 0.03em;
+            transition: border-color 0.3s;
+        }
+
+        .email-input::placeholder {
+            color: var(--charcoal);
+            opacity: 0.35;
+        }
+
+        .email-input:focus {
+            border-bottom-color: var(--gold);
+        }
+
+        .error-msg {
+            font-size: 11px;
+            font-style: italic;
+            color: #b5594e;
+            opacity: 0;
+            transition: opacity 0.3s;
+            margin-top: 8px;
+            height: 16px;
+        }
+
+        .error-msg.visible { opacity: 1; }
+
+        .apply-btn {
+            margin-top: 1.4rem;
+            width: 100%;
+            padding: 14px 0;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-family: 'Inter', sans-serif;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.4s, color 0.4s, opacity 0.3s;
+        }
+
+        .apply-btn:hover {
+            background-color: var(--gold);
+            color: #fff;
+        }
+
+        .apply-btn.submitted {
+            opacity: 0.45;
+            pointer-events: none;
+            border-color: var(--charcoal);
+            color: var(--charcoal);
+        }
+
+        /* ── Footer ── */
+        .footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding-bottom: clamp(2rem, 4vh, 3.5rem);
+        }
+
+        .footer-line {
+            width: 30px;
+            height: 1px;
+            background-color: var(--gold);
+            margin: 0 auto 1rem;
+            opacity: 0.4;
+        }
+
+        .footer-philosophy {
+            font-family: 'Inter', sans-serif;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--charcoal);
+            opacity: 0.3;
+            line-height: 2;
+        }
+
+        @media (max-height: 650px) {
+            .header { padding-top: 1.5rem; }
+            .hero-headline { margin-bottom: 1rem; }
+            .hero-sub { margin-bottom: 1.5rem; }
+            .cta-instruction { margin-bottom: 1rem; }
+            .apply-btn { margin-top: 1rem; }
+            .footer { padding-bottom: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="header-name">Dancing Cloud</div>
+            <div class="header-tagline">The Standard of Excellence.</div>
+        </header>
+
+        <!-- Hero -->
+        <main class="hero">
+            <h1 class="hero-headline">Curation for the Refined Individual.</h1>
+            <p class="hero-sub">
+                An integrated system for those who value intentionality. Access a private archive of strategy across five essential pillars: Mentality, Finance, Lifestyle, Social, and Ritual.
+            </p>
+
+            <!-- CTA -->
+            <div class="cta-section">
+                <p class="cta-instruction">The Archive is currently in development. Request early access to the 2026 release.</p>
+                <input
+                    id="emailInput"
+                    type="email"
+                    class="email-input"
+                    placeholder="Email address"
+                    required
+                >
+                <p id="errorMsg" class="error-msg">Please enter a valid email address.</p>
+                <button id="applyBtn" class="apply-btn">Request Invitation</button>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-line"></div>
+            <div class="footer-philosophy">
+                Quality over frequency. Precision over noise. Silent growth.
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        const emailInput = document.getElementById('emailInput');
+        const applyBtn = document.getElementById('applyBtn');
+        const errorMsg = document.getElementById('errorMsg');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        applyBtn.addEventListener('click', () => {
+            const val = emailInput.value.trim();
+            if (!val || !emailRegex.test(val)) {
+                errorMsg.classList.add('visible');
+                emailInput.style.borderBottomColor = '#b5594e';
+            } else {
+                errorMsg.classList.remove('visible');
+                emailInput.style.display = 'none';
+                errorMsg.style.display = 'none';
+                applyBtn.textContent = 'Thank you. We will be in touch.';
+                applyBtn.style.pointerEvents = 'none';
+            }
+        });
+
+        emailInput.addEventListener('input', () => {
+            errorMsg.classList.remove('visible');
+            emailInput.style.borderBottomColor = '';
+        });
+    </script>
+</body>
+</html>
